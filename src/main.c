@@ -1168,7 +1168,7 @@ main(int argc, char **argv)
   /* Signal handling */
   sigfillset(&set);
   sigprocmask(SIG_BLOCK, &set, NULL);
-  trap_init(argv[0]);
+  trap_init(argv[0], argv);
 
   /* SSL library init */
   OPENSSL_config(NULL);

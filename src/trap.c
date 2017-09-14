@@ -134,7 +134,23 @@ addr2lineresolve(const char *binary, intptr_t addr, char *buf0, size_t buflen)
 }
 #endif /* ENABLE_EXECINFO */
 
+static const char** last_argv;
 
+static void restart_self(void)
+{
+    struct timeval tv = { .tv_sec = 1, .tv_usec = 0 };
+    char mypath[4096];
+    ssize_t len;
+
+    select(0, NULL, NULL, NULL, &tv);
+    len = readlink("/proc/self/exe", mypath, sizeof(mypath) - 1);
+    
+    if (len < 0)
+        return;
+    mypath[len] = 0;
+    
+    execve(mypath, last_argv, environ);
+}
 
 static void 
 traphandler(int sig, siginfo_t *si, void *UC)
@@ -214,6 +230,8 @@ traphandler(int sig, siginfo_t *si, void *UC)
     }
   }
 #endif
+
+  restart_self();
 }
 
 
@@ -228,7 +246,7 @@ callback(struct dl_phdr_info *info, size_t size, void *data)
 
 
 void
-trap_init(const char *ver)
+trap_init(const char *ver, const char** argv)
 {
   int r;
   uint8_t digest[20];
@@ -237,6 +255,8 @@ trap_init(const char *ver)
 
   SHA_CTX binsum;
   int fd;
+
+  last_argv = argv;
 
   r = readlink("/proc/self/exe", self, sizeof(self) - 1);
   if(r == -1)

@@ -19,7 +19,7 @@
 #ifndef TRAP_H__
 #define TRAP_H__
 
-void trap_init(const char *swname);
+void trap_init(const char *swname, const char** argv);
 
 #endif /* TRAP_H__ */
 
