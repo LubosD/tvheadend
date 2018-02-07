@@ -424,7 +424,7 @@ descrambler_service_stop ( service_t *t )
   p = t->s_descramble_info;
   t->s_descramble_info = NULL;
   pthread_mutex_unlock(&t->s_stream_mutex);
-  free(p);
+  // free(p);
   if (dr) {
     for (i = 0; i < DESCRAMBLER_MAX_KEYS; i++) {
       tk = &dr->dr_keys[i];

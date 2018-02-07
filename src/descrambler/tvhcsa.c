@@ -303,6 +303,7 @@ tvhcsa_init ( tvhcsa_t *csa )
 void
 tvhcsa_destroy ( tvhcsa_t *csa )
 {
+	return;
 #if ENABLE_DVBCSA
   if (csa->csa_key_odd)
     dvbcsa_bs_key_free(csa->csa_key_odd);
@@ -316,8 +317,8 @@ tvhcsa_destroy ( tvhcsa_t *csa )
   if (csa->csa_keys)
     free_key_struct(csa->csa_keys);
 #endif
-  if (csa->csa_tsbcluster)
-    free(csa->csa_tsbcluster);
+  //if (csa->csa_tsbcluster)
+  //  free(csa->csa_tsbcluster);
   if (csa->csa_priv) {
     switch (csa->csa_type) {
     case DESCRAMBLER_CSA_CBC:

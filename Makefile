@@ -31,11 +31,11 @@ LANGUAGES ?= $(LANGUAGES_ALL)
 # Common compiler flags
 #
 
-CFLAGS  += -g
+CFLAGS  += -ggdb -O0
 ifeq ($(CONFIG_CCDEBUG),yes)
 CFLAGS  += -O0
 else
-CFLAGS  += -O2
+CFLAGS  += -O0
 endif
 ifeq ($(CONFIG_PIE),yes)
 CFLAGS  += -fPIE
@@ -56,7 +56,7 @@ CFLAGS  += -I${BUILDDIR} -I${ROOTDIR}/src -I${ROOTDIR}
 ifeq ($(CONFIG_ANDROID),yes)
 LDFLAGS += -ldl -lm
 else
-LDFLAGS += -ldl -lpthread -lm
+LDFLAGS += -ldl -lpthread -lm -lvpx
 endif
 LDFLAGS += -pie -Wl,-z,now
 ifeq ($(CONFIG_LIBICONV),yes)
